@@ -155,7 +155,7 @@ class FedoraResourceSearch extends ConfigurableSearchPluginBase implements Acces
   /**
    * {@inheritdoc}
    */
-  static public function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
       $plugin_id,
@@ -191,6 +191,8 @@ class FedoraResourceSearch extends ConfigurableSearchPluginBase implements Acces
    *   The language manager.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The $account object to use for checking for access to advanced search.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, EntityManagerInterface $entity_manager, ModuleHandlerInterface $module_handler, Config $search_settings, LanguageManagerInterface $language_manager, RendererInterface $renderer, AccountInterface $account = NULL) {
     $this->database = $database;
@@ -458,7 +460,7 @@ class FedoraResourceSearch extends ConfigurableSearchPluginBase implements Acces
   /**
    * Adds the configured rankings to the search query.
    *
-   * @param SelectExtender $query
+   * @param \Drupal\Core\Database\Query\SelectExtender $query
    *   A query object that has been extended with the Search DB Extender.
    */
   protected function addFedoraResourceRankings(SelectExtender $query) {

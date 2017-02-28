@@ -30,6 +30,9 @@ script:
   - phpcpd --names *.module,*.inc,*.test,*.php $TRAVIS_BUILD_DIR
   - php core/scripts/run-tests.sh --verbose --php `which php` islandora
 
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
 notifications:
   irc:
     channels:

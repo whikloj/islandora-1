@@ -2,10 +2,11 @@
 [![Build Status][1]](https://travis-ci.org/Islandora-CLAW/islandora)
 [![Contribution Guidelines][2]](./CONTRIBUTING.md)
 [![LICENSE][3]](./LICENSE)
+[![codecov](https://codecov.io/gh/Islandora-CLAW/islandora/branch/master/graph/badge.svg)](https://codecov.io/gh/Islandora-CLAW/islandora)
 
 ## Introduction
 
-Islandora modules for Drupal 8.2.x
+Core Islandora module for Drupal 8.2.x.
 
 ## Maintainers
 
