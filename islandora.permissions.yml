@@ -24,4 +24,3 @@ administer fedora resource type entities:
   title: 'Administer Fedora Resource Type entities'
   description: 'Allow to access administration of Fedora Resource Type entities (bundles).'
   restrict access: true
-
