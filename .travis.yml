@@ -12,6 +12,7 @@ matrix:
 branches:
   only:
     - /^8.x/
+    - codecov
 
 before_install:
   - export SCRIPT_DIR=$TRAVIS_BUILD_DIR/.scripts
