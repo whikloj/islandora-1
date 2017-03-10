@@ -27,7 +27,7 @@ an Islandora Foundation [Contributor License Agreement][5] or
 
 ## License
 
-[GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
+[GPLv2][8]
 
 [1]: https://travis-ci.org/Islandora-CLAW/islandora.png?branch=8.x-1.x
 [2]: http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg
@@ -36,3 +36,4 @@ an Islandora Foundation [Contributor License Agreement][5] or
 [5]: http://islandora.ca/sites/default/files/islandora_cla.pdf
 [6]: http://islandora.ca/sites/default/files/islandora_ccla.pdf
 [7]: http://islandora.ca/resources/contributors
+[8]: http://www.gnu.org/licenses/gpl-2.0.txt
