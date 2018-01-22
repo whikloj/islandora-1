@@ -98,7 +98,7 @@ class JwtEventSubscriberTest extends IslandoraKernelTestBase {
   /**
    * @covers \Drupal\islandora\EventSubscriber\JwtEventSubscriber::validate
    */
-  public function testInvliadatesBadAccount() {
+  public function testInvalidatesBadAccount() {
     $anotherUser = $this->createUser();
 
     // Mock user entity storage, loads the wrong user.
