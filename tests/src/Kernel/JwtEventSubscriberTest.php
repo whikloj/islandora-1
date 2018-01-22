@@ -7,7 +7,7 @@ use Drupal\jwt\Authentication\Event\JwtAuthValidEvent;
 use Drupal\jwt\Authentication\Event\JwtAuthValidateEvent;
 use Drupal\jwt\JsonWebToken\JsonWebToken;
 use Drupal\jwt\JsonWebToken\JsonWebTokenInterface;
-use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\simpletest\UserCreationTrait;
 use Drupal\core\Entity\EntityStorageInterface;
 use Drupal\islandora\EventSubscriber\JwtEventSubscriber;
 
