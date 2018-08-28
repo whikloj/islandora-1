@@ -330,7 +330,7 @@ class FedoraAdapter implements AdapterInterface {
   /**
    * Delete a tombstone for a path if it exists.
    *
-   * @param $path
+   * @param string $path
    *   The original deleted resource path.
    *
    * @return bool|null
@@ -348,7 +348,7 @@ class FedoraAdapter implements AdapterInterface {
         });
         foreach ($tombstones as $tombstone) {
           // Trim <> from URL.
-          $url = rtrim(ltrim($tombstone[0], '<'),'>');
+          $url = rtrim(ltrim($tombstone[0], '<'), '>');
           $response = $this->fedora->deleteResource($url);
           if ($response->getStatusCode() == 204) {
             $return = TRUE;
