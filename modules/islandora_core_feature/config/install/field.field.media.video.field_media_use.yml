@@ -2,29 +2,27 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.media.field_media_of
+    - field.storage.media.field_media_use
     - media.type.video
-    - node.type.islandora_object
-  enforced:
-    module:
-      - islandora_core_feature
-id: media.video.field_media_of
-field_name: field_media_of
+    - taxonomy.vocabulary.islandora_media_use
+id: media.video.field_media_use
+field_name: field_media_use
 entity_type: media
 bundle: video
-label: 'Media of'
+label: 'Media Use'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      islandora_object: islandora_object
+      islandora_media_use: islandora_media_use
     sort:
-      field: _none
+      field: name
+      direction: asc
     auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference

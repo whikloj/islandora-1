@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_external_uri_single
+    - taxonomy.vocabulary.islandora_display
+  module:
+    - link
+id: taxonomy_term.islandora_display.field_external_uri_single
+field_name: field_external_uri_single
+entity_type: taxonomy_term
+bundle: islandora_display
+label: 'External URI'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 1
+field_type: link

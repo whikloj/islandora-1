@@ -3,11 +3,13 @@
 namespace Drupal\islandora\MediaSource;
 
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\Query\QueryException;
 use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\File\FileSystem;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
+use Drupal\islandora\IslandoraUtils;
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaTypeInterface;
 use Drupal\node\NodeInterface;
@@ -57,6 +59,13 @@ class MediaSourceService {
   protected $fileSystem;
 
   /**
+   * Islandora Utility service.
+   *
+   * @var \Drupal\islandora\IslandoraUtils
+   */
+  protected $islandoraUtils;
+
+  /**
    * Constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
@@ -75,13 +84,15 @@ class MediaSourceService {
     AccountInterface $account,
     LanguageManagerInterface $language_manager,
     QueryFactory $entity_query,
-    FileSystem $file_system
+    FileSystem $file_system,
+    IslandoraUtils $islandora_utils
   ) {
     $this->entityTypeManager = $entity_type_manager;
     $this->account = $account;
     $this->languageManager = $language_manager;
     $this->entityQuery = $entity_query;
     $this->fileSystem = $file_system;
+    $this->islandoraUtils = $islandora_utils;
   }
 
   /**
@@ -238,10 +249,7 @@ class MediaSourceService {
     $mimetype,
     $content_location
   ) {
-    $existing = $this->entityQuery->get('media')
-      ->condition('field_media_of', $node->id())
-      ->condition('field_tags', $taxonomy_term->id())
-      ->execute();
+    $existing = $this->islandoraUtils->getMediaReferencingNodeAndTerm($node, $taxonomy_term);
 
     if (!empty($existing)) {
       // Just update already existing media.
@@ -299,13 +307,23 @@ class MediaSourceService {
         "$source_field" => [
           'target_id' => $file->id(),
         ],
-        'field_tags' => [
-          'target_id' => $taxonomy_term->id(),
-        ],
-        'field_media_of' => [
-          'target_id' => $node->id(),
-        ],
       ];
+
+      // Get the media fields that reference taxonomy terms.
+      $taxonomy_fields = $this->islandoraUtils->getReferencingFields('media', 'taxonomy_term');
+      // Get the media fields that reference nodes.
+      $node_fields = $this->islandoraUtils->getReferencingFields('media', 'node');
+
+      foreach ($node_fields as $field) {
+        $media_struct[$field] = [
+          'target_id' => $node->id(),
+        ];
+      }
+      foreach ($taxonomy_fields as $field) {
+        $media_struct[$field] = [
+          'target_id' => $taxonomy_term->id(),
+        ];
+      }
 
       // Set alt text.
       if ($source_field_config->getSetting('alt_field') && $source_field_config->getSetting('alt_field_required')) {
