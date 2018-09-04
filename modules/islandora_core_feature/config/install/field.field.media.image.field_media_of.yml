@@ -19,5 +19,5 @@ default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:node'
-  handler_settings: { }
+  handler_settings: {  }
 field_type: entity_reference

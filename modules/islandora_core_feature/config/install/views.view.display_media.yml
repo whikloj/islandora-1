@@ -206,8 +206,8 @@ display:
           expose:
             operator: ''
           group: 1
-        field_external_uri_single_uri_1:
-          id: field_external_uri_single_uri_1
+        field_external_uri_single_uri:
+          id: field_external_uri_single_uri
           table: taxonomy_term__field_external_uri_single
           field: field_external_uri_single_uri
           relationship: field_media_use
