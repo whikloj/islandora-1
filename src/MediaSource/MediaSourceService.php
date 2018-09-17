@@ -307,23 +307,13 @@ class MediaSourceService {
         "$source_field" => [
           'target_id' => $file->id(),
         ],
-      ];
-
-      // Get the media fields that reference taxonomy terms.
-      $taxonomy_fields = $this->islandoraUtils->getReferencingFields('media', 'taxonomy_term');
-      // Get the media fields that reference nodes.
-      $node_fields = $this->islandoraUtils->getReferencingFields('media', 'node');
-
-      foreach ($node_fields as $field) {
-        $media_struct[$field] = [
+        IslandoraUtils::MEDIA_OF_FIELD => [
           'target_id' => $node->id(),
-        ];
-      }
-      foreach ($taxonomy_fields as $field) {
-        $media_struct[$field] = [
+        ],
+        IslandoraUtils::MEDIA_USAGE_FIELD => [
           'target_id' => $taxonomy_term->id(),
-        ];
-      }
+        ]
+      ];
 
       // Set alt text.
       if ($source_field_config->getSetting('alt_field') && $source_field_config->getSetting('alt_field_required')) {

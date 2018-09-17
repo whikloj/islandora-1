@@ -26,9 +26,7 @@ use Drupal\taxonomy\TermInterface;
 class IslandoraUtils {
 
   const EXTERNAL_URI_FIELD = 'field_external_uri';
-  const EXTERNAL_URI_FIELD_SINGLE = 'field_external_uri_single';
   const MEDIA_OF_FIELD = 'field_media_of';
-  const TAGS_FIELD = 'field_tags';
   const MEDIA_USAGE_FIELD = 'field_media_use';
 
   /**
@@ -222,15 +220,9 @@ class IslandoraUtils {
    *   getStorage() throws if the storage handler couldn't be loaded
    */
   public function getTermForUri($uri) {
-    $query = $this->entityQuery->get('taxonomy_term');
-    $results = $query
-      ->condition(
-        $query->orConditionGroup()
-        ->condition(self::EXTERNAL_URI_FIELD . '.uri', $uri)
-        ->condition(self::EXTERNAL_URI_FIELD_SINGLE . '.uri', $uri)
-      )
+    $results = $this->entityQuery->get('taxonomy_term')
+      ->condition(self::EXTERNAL_URI_FIELD . '.uri', $uri)
       ->execute();
-
     if (empty($results)) {
       return NULL;
     }
@@ -250,14 +242,8 @@ class IslandoraUtils {
    *   $field->first() if data structure is unset and no item can be created.
    */
   public function getUriForTerm(TermInterface $term) {
-    if ($term && ($term->hasField(self::EXTERNAL_URI_FIELD) ||
-      $term->hasField(self::EXTERNAL_URI_FIELD_SINGLE))) {
-      if ($term->hasField(self::EXTERNAL_URI_FIELD_SINGLE)) {
-        $field = $term->get(self::EXTERNAL_URI_FIELD_SINGLE);
-      }
-      else {
-        $field = $term->get(self::EXTERNAL_URI_FIELD);
-      }
+    if ($term && $term->hasField(self::EXTERNAL_URI_FIELD)) {
+      $field = $term->get(self::EXTERNAL_URI_FIELD);
       if (!$field->isEmpty()) {
         $link = $field->first()->getValue();
         return $link['uri'];

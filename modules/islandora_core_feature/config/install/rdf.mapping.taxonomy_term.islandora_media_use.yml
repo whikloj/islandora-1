@@ -2,29 +2,29 @@ langcode: en
 status: true
 dependencies:
   config:
-  - taxonomy.vocabulary.islandora_media_use
+    - taxonomy.vocabulary.islandora_media_use
   enforced:
     module:
-    - islandora_core_feature
+      - islandora_core_feature
   module:
-  - taxonomy
+    - taxonomy
 id: taxonomy_term.islandora_media_use
 targetEntityType: taxonomy_term
 bundle: islandora_media_use
 types:
-- 'schema:Thing'
+  - 'schema:Thing'
 fieldMappings:
   name:
     properties:
-    - 'dc:title'
+      - 'dc:title'
   description:
     properties:
-    - 'dc:description'
+      - 'dc:description'
   field_external_uri:
     properties:
-    - 'owl:sameAs'
+      - 'owl:sameAs'
   changed:
     properties:
-    - 'schema:dateModified'
+      - 'schema:dateModified'
     datatype_callback:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

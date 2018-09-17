@@ -206,10 +206,10 @@ display:
           expose:
             operator: ''
           group: 1
-        field_external_uri_single_uri:
-          id: field_external_uri_single_uri
-          table: taxonomy_term__field_external_uri_single
-          field: field_external_uri_single_uri
+        field_external_uri_uri:
+          id: field_external_uri_uri
+          table: taxonomy_term__field_external_uri
+          field: field_external_uri_uri
           relationship: field_media_use
           group_type: group
           admin_label: ''
@@ -284,10 +284,10 @@ display:
           expose:
             operator: ''
           group: 1
-        field_external_uri_single_uri:
-          id: field_external_uri_single_uri
-          table: taxonomy_term__field_external_uri_single
-          field: field_external_uri_single_uri
+        field_external_uri_uri:
+          id: field_external_uri_uri
+          table: taxonomy_term__field_external_uri
+          field: field_external_uri_uri
           relationship: field_media_use
           group_type: group
           admin_label: ''
@@ -361,10 +361,10 @@ display:
           expose:
             operator: ''
           group: 1
-        field_external_uri_single_uri:
-          id: field_external_uri_single_uri
-          table: taxonomy_term__field_external_uri_single
-          field: field_external_uri_single_uri
+        field_external_uri_uri:
+          id: field_external_uri_uri
+          table: taxonomy_term__field_external_uri
+          field: field_external_uri_uri
           relationship: field_media_use
           group_type: group
           admin_label: ''
