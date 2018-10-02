@@ -21,7 +21,7 @@ process:
   name: name
   vid: vid
   description: description
-  field_external_uri_single:
+  field_external_uri:
     plugin: urlencode
     source: external_uri
 destination:

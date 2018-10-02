@@ -9,10 +9,12 @@ dependencies:
   - eva
   - features
   - field
+  - field_permissions
   - file
   - filehash
   - image
   - islandora
+  - islandora_demo
   - jsonld
   - jwt
   - language

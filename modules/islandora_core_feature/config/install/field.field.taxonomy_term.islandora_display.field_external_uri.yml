@@ -10,13 +10,13 @@ id: taxonomy_term.islandora_display.field_external_uri
 field_name: field_external_uri
 entity_type: taxonomy_term
 bundle: islandora_display
-label: field_external_uri
+label: 'External URI'
 description: ''
 required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  link_type: 16
-  title: 0
+  title: 1
+  link_type: 17
 field_type: link
