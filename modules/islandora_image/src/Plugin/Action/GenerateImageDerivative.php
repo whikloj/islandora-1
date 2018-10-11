@@ -1,27 +1,28 @@
 <?php
 
-namespace Drupal\islandora\Plugin\Action;
+namespace Drupal\islandora_image\Plugin\Action;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\islandora\Plugin\Action\AbstractGenerateDerivative;
 
 /**
- * Emits a Node for generating video derivatives event.
+ * Emits a Node event.
  *
  * @Action(
- *   id = "generate_video_derivative",
- *   label = @Translation("Generate a video derivative"),
+ *   id = "generate_image_derivative",
+ *   label = @Translation("Generate an image derivative"),
  *   type = "node"
  * )
  */
-class GenerateVideoDerivative extends AbstractGenerateDerivative {
+class GenerateImageDerivative extends AbstractGenerateDerivative {
 
   /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
     $config = parent::defaultConfiguration();
-    $config['path'] = '[date:custom:Y]-[date:custom:m]/[node:nid].mp4';
-    $config['mimetype'] = 'video/mp4';
+    $config['mimetype'] = 'image/jpeg';
+    $config['path'] = '[date:custom:Y]-[date:custom:m]/[node:nid].jpg';
     return $config;
   }
 
@@ -30,8 +31,8 @@ class GenerateVideoDerivative extends AbstractGenerateDerivative {
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
-    $form['mimetype']['#description'] = t('Mimetype to convert to (e.g. video/mp4, video/quicktime, etc...)');
-    $form['args']['#description'] = t('Additional command line parameters for FFMpeg');
+    $form['mimetype']['#description'] = t('Mimetype to convert to (e.g. image/jpeg, image/png, etc...)');
+    $form['args']['#description'] = t('Additional command line arguments for ImageMagick convert (e.g. -resize 50%');
     return $form;
   }
 
@@ -40,11 +41,13 @@ class GenerateVideoDerivative extends AbstractGenerateDerivative {
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::validateConfigurationForm($form, $form_state);
+
     $exploded_mime = explode('/', $form_state->getValue('mimetype'));
-    if ($exploded_mime[0] != 'video') {
+
+    if ($exploded_mime[0] != "image") {
       $form_state->setErrorByName(
         'mimetype',
-        t('Please enter a video mimetype (e.g. video/mp4, video/quicktime, etc...)')
+        t('Please enter an image mimetype (e.g. image/jpeg, image/png, etc...)')
       );
     }
   }
