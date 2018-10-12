@@ -1,29 +1,27 @@
 <?php
 
-namespace Drupal\Tests\islandora_image\Functional;
+namespace Drupal\Tests\islandora_video\Functional;
 
 use Drupal\Tests\islandora\Functional\GenerateDerivativeTestBase;
 
 /**
- * Tests the GenerateImageDerivative action.
+ * Tests the GenerateVideoDerivative action.
  *
- * @group islandora_image
+ * @group islandora_video
  */
-class GenerateImageDerivativeTest extends GenerateDerivativeTestBase {
+class GenerateVideoDerivativeTest extends GenerateDerivativeTestBase {
 
-  protected static $modules = ['context_ui', 'islandora_image'];
+  protected static $modules = ['context_ui', 'islandora_video'];
 
   /**
-   * @covers \Drupal\islandora_image\Plugin\Action\GenerateImageDerivative::defaultConfiguration
-   * @covers \Drupal\islandora_image\Plugin\Action\GenerateImageDerivative::buildConfigurationForm
-   * @covers \Drupal\islandora_image\Plugin\Action\GenerateImageDerivative::validateConfigurationForm
+   * @covers \Drupal\islandora_video\Plugin\Action\GenerateVideoDerivative::defaultConfiguration
+   * @covers \Drupal\islandora_video\Plugin\Action\GenerateVideoDerivative::buildConfigurationForm
    * @covers \Drupal\islandora\Plugin\Action\AbstractGenerateDerivative::defaultConfiguration
    * @covers \Drupal\islandora\Plugin\Action\AbstractGenerateDerivative::buildConfigurationForm
-   * @covers \Drupal\islandora\Plugin\Action\AbstractGenerateDerivative::validateConfigurationForm
    * @covers \Drupal\islandora\Plugin\Action\AbstractGenerateDerivative::submitConfigurationForm
    * @covers \Drupal\islandora\Plugin\Action\AbstractGenerateDerivative::execute
    */
-  public function testGenerateImageDerivativeFromScratch() {
+  public function testGenerateVideoDerivativeFromScratch() {
 
     // Create a test user.
     $account = $this->drupalCreateUser([
@@ -38,7 +36,7 @@ class GenerateImageDerivativeTest extends GenerateDerivativeTestBase {
 
     // Create an action to generate a jpeg thumbnail.
     $this->drupalGet('admin/config/system/actions');
-    $this->getSession()->getPage()->findById("edit-action")->selectOption("Generate an image derivative");
+    $this->getSession()->getPage()->findById("edit-action")->selectOption("Generate a video derivative");
     $this->getSession()->getPage()->pressButton(t('Create'));
     $this->assertSession()->statusCodeEquals(200);
 
@@ -47,10 +45,10 @@ class GenerateImageDerivativeTest extends GenerateDerivativeTestBase {
     $this->getSession()->getPage()->fillField('edit-queue', "generate-test-derivative");
     $this->getSession()->getPage()->fillField("edit-source-term", $this->preservationMasterTerm->label());
     $this->getSession()->getPage()->fillField("edit-derivative-term", $this->serviceFileTerm->label());
-    $this->getSession()->getPage()->fillField('edit-mimetype', "image/jpeg");
-    $this->getSession()->getPage()->fillField('edit-args', "-thumbnail 20x20");
+    $this->getSession()->getPage()->fillField('edit-mimetype', "video/mp4");
+    $this->getSession()->getPage()->fillField('edit-args', "-f mp4");
     $this->getSession()->getPage()->fillField('edit-scheme', "public");
-    $this->getSession()->getPage()->fillField('edit-path', "derp.jpeg");
+    $this->getSession()->getPage()->fillField('edit-path', "derp.mov");
     $this->getSession()->getPage()->pressButton(t('Save'));
     $this->assertSession()->statusCodeEquals(200);
 
@@ -71,9 +69,9 @@ class GenerateImageDerivativeTest extends GenerateDerivativeTestBase {
     $expected = [
       'source_uri' => 'test_file.txt',
       'destination_uri' => "node/1/media/{$this->testMediaType->id()}/3",
-      'file_upload_uri' => 'public://derp.jpeg',
-      'mimetype' => 'image/jpeg',
-      'args' => '-thumbnail 20x20',
+      'file_upload_uri' => 'public://derp.mov',
+      'mimetype' => 'video/mp4',
+      'args' => '-f mp4',
     ];
 
     // Check the message gets published and is of the right shape.
