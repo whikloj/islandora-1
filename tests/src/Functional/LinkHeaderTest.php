@@ -45,7 +45,7 @@ class LinkHeaderTest extends IslandoraFunctionalTestBase {
   public function setUp() {
     parent::setUp();
 
-    $this->createUserAndLogin();
+    $account = $this->createUserAndLogin();
     $this->createImageTag();
     $this->createPreservationMasterTag();
 

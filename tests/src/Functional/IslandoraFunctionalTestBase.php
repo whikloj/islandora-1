@@ -182,6 +182,7 @@ EOD;
     // Create a test user.
     $account = $this->drupalCreateUser();
     $this->drupalLogin($account);
+    return $account;
   }
 
   /**
