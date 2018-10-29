@@ -42,9 +42,9 @@ class GenerateImageDerivativeTest extends GenerateDerivativeTestBase {
     $this->getSession()->getPage()->pressButton(t('Create'));
     $this->assertSession()->statusCodeEquals(200);
 
-    $this->getSession()->getPage()->fillField('edit-label', "Generate test derivative");
-    $this->getSession()->getPage()->fillField('edit-id', "generate_test_derivative");
-    $this->getSession()->getPage()->fillField('edit-queue', "generate-test-derivative");
+    $this->getSession()->getPage()->fillField('edit-label', "Generate image test derivative");
+    $this->getSession()->getPage()->fillField('edit-id', "generate_image_test_derivative");
+    $this->getSession()->getPage()->fillField('edit-queue', "generate-image-test-derivative");
     $this->getSession()->getPage()->fillField("edit-source-term", $this->preservationMasterTerm->label());
     $this->getSession()->getPage()->fillField("edit-derivative-term", $this->serviceFileTerm->label());
     $this->getSession()->getPage()->fillField('edit-mimetype', "image/jpeg");
@@ -56,7 +56,7 @@ class GenerateImageDerivativeTest extends GenerateDerivativeTestBase {
 
     // Create a context and add the action as a derivative reaction.
     $this->createContext('Test', 'test');
-    $this->addPresetReaction('test', 'derivative', "generate_test_derivative");
+    $this->addPresetReaction('test', 'derivative', "generate_image_test_derivative");
     $this->assertSession()->statusCodeEquals(200);
 
     // Create a new preservation master belonging to the node.

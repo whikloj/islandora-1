@@ -17,20 +17,6 @@ abstract class GenerateDerivativeTestBase extends IslandoraFunctionalTestBase {
   protected $node;
 
   /**
-   * Term to belong to the node.
-   *
-   * @var \Drupal\taxonomy\TermInterface
-   */
-  protected $imageTerm;
-
-  /**
-   * Term to belong to the source media.
-   *
-   * @var \Drupal\taxonomy\TermInterface
-   */
-  protected $preservationMasterTerm;
-
-  /**
    * Term to belong to the derivative media.
    *
    * @var \Drupal\taxonomy\TermInterface
@@ -43,27 +29,11 @@ abstract class GenerateDerivativeTestBase extends IslandoraFunctionalTestBase {
   public function setUp() {
     parent::setUp();
 
-    // Create a test user.
-    $account = $this->drupalCreateUser();
-    $this->drupalLogin($account);
+    $this->createUserAndLogin();
+    $this->createImageTag();
+    $this->createPreservationMasterTag();
 
-    // 'Image' tag.
-    $this->imageTerm = $this->container->get('entity_type.manager')->getStorage('taxonomy_term')->create([
-      'name' => 'Image',
-      'vid' => $this->testVocabulary->id(),
-      'field_external_uri' => [['uri' => "http://purl.org/coar/resource_type/c_c513"]],
-    ]);
-    $this->imageTerm->save();
-
-    // 'Preservation Master' tag.
-    $this->preservationMasterTerm = $this->container->get('entity_type.manager')->getStorage('taxonomy_term')->create([
-      'name' => 'Preservation Master',
-      'vid' => $this->testVocabulary->id(),
-      'field_external_uri' => [['uri' => "http://pcdm.org/use#PreservationMasterFile"]],
-    ]);
-    $this->preservationMasterTerm->save();
-
-    // 'Preservation Master' tag.
+    // 'Service File' tag.
     $this->serviceFileTerm = $this->container->get('entity_type.manager')->getStorage('taxonomy_term')->create([
       'name' => 'Service File',
       'vid' => $this->testVocabulary->id(),
