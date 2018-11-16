@@ -244,6 +244,14 @@ class AbstractGenerateDerivative extends EmitEvent {
       '#default_value' => $this->configuration['path'],
       '#description' => t('Path within the upload destination where files will be stored. Includes the filename and optional extension.'),
     ];
+    $form['queue'] = [
+      '#type' => 'textfield',
+      '#title' => t('Queue name'),
+      '#default_value' => $this->configuration['queue'],
+      '#description' => t('Queue name to send along to help routing events, CHANGE WITH CARE. Defaults to :queue', [
+        ':queue' => $this->defaultConfiguration()['queue'],
+      ]),
+    ];
     return $form;
   }
 

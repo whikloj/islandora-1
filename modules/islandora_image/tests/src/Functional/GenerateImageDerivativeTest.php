@@ -74,6 +74,7 @@ class GenerateImageDerivativeTest extends GenerateDerivativeTestBase {
       'file_upload_uri' => 'public://derp.jpeg',
       'mimetype' => 'image/jpeg',
       'args' => '-thumbnail 20x20',
+      'queue' => 'islandora-connector-houdini',
     ];
 
     // Check the message gets published and is of the right shape.

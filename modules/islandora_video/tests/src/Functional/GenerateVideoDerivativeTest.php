@@ -72,6 +72,7 @@ class GenerateVideoDerivativeTest extends GenerateDerivativeTestBase {
       'file_upload_uri' => 'public://derp.mov',
       'mimetype' => 'video/mp4',
       'args' => '-f mp4',
+      'queue' => 'islandora-connector-homarus',
     ];
 
     // Check the message gets published and is of the right shape.
