@@ -6,8 +6,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\user\UserInterface;
-use Drupal\media_entity\MediaInterface;
-use Drupal\node\NodeInterface;
 
 /**
  * The default EventGenerator implementation.
@@ -19,46 +17,20 @@ class EventGenerator implements EventGeneratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function generateCreateEvent(EntityInterface $entity, UserInterface $user) {
-    $event = $this->generateEvent($entity, $user);
-    $event["type"] = "Create";
-    return json_encode($event);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function generateUpdateEvent(EntityInterface $entity, UserInterface $user) {
-    $event = $this->generateEvent($entity, $user);
-    $event["type"] = "Update";
-    return json_encode($event);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function generateDeleteEvent(EntityInterface $entity, UserInterface $user) {
-    $event = $this->generateEvent($entity, $user);
-    $event["type"] = "Delete";
-    return json_encode($event);
-  }
-
-  /**
-   * Shared event generation function that does not impose a 'Type'.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity that was created.
-   * @param \Drupal\user\UserInterface $user
-   *   The user who created the entity.
-   *
-   * @return array
-   *   Event message as an array.
-   */
-  protected function generateEvent(EntityInterface $entity, UserInterface $user) {
+  public function generateEvent(EntityInterface $entity, UserInterface $user, array $data) {
 
     $user_url = $user->toUrl()->setAbsolute()->toString();
 
-    return [
+    if ($entity instanceof FileInterface) {
+      $entity_url = $entity->url();
+      $mimetype = $entity->getMimeType();
+    }
+    else {
+      $entity_url = $entity->toUrl()->setAbsolute()->toString();
+      $mimetype = 'text/html';
+    }
+
+    $event = [
       "@context" => "https://www.w3.org/ns/activitystreams",
       "actor" => [
         "type" => "Person",
@@ -75,122 +47,59 @@ class EventGenerator implements EventGeneratorInterface {
       ],
       "object" => [
         "id" => "urn:uuid:{$entity->uuid()}",
-        "url" => $this->generateEntityLinks($entity),
+        "url" => [
+          [
+            "name" => "Canonical",
+            "type" => "Link",
+            "href" => $entity_url,
+            "mediaType" => $mimetype,
+            "rel" => "canonical",
+          ],
+        ],
       ],
     ];
-  }
 
-  /**
-   * Generates entity urls depending on entity type.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity.
-   *
-   * @return array
-   *   AS2 Links.
-   */
-  protected function generateEntityLinks(EntityInterface $entity) {
-    if ($entity instanceof FileInterface) {
-      return $this->generateFileLinks($entity);
+    $entity_type = $entity->getEntityTypeId();
+    $event_type = $data["event"];
+    if ($data["event"] == "Generate Derivative") {
+      $event["type"] = "Activity";
+      $event["summary"] = $data["event"];
     }
-    elseif ($entity instanceof MediaInterface) {
-      return $this->generateMediaLinks($entity);
+    else {
+      $event["type"] = ucfirst($data["event"]);
+      $event["summary"] = ucfirst($data["event"]) . " a " . ucfirst($entity_type);
     }
 
-    return $this->generateNodeLinks($entity);
-  }
-
-  /**
-   * Generates file urls.
-   *
-   * @param \Drupal\file\FileInterface $file
-   *   The file.
-   *
-   * @return array
-   *   AS2 Links.
-   */
-  protected function generateFileLinks(FileInterface $file) {
-    $file_url = $file->url();
-    $checksum_url = Url::fromRoute('view.file_checksum.rest_export_1', ['file' => $file->id()])
-      ->setAbsolute()
-      ->toString();
-
-    return [
-      [
-        "name" => "File",
+    // Add REST links for non-file entities.
+    if ($entity_type != 'file') {
+      $event['object']['url'][] = [
+        "name" => "JSON",
         "type" => "Link",
-        "href" => "$file_url",
-        "mediaType" => $file->getMimeType(),
-      ],
-      [
-        "name" => "Checksum",
-        "type" => "Link",
-        "href" => "$checksum_url?_format=json",
+        "href" => "$entity_url?_format=json",
         "mediaType" => "application/json",
-      ],
-    ];
-  }
+        "rel" => "alternate",
+      ];
+      $event['object']['url'][] = [
+        "name" => "JSONLD",
+        "type" => "Link",
+        "href" => "$entity_url?_format=jsonld",
+        "mediaType" => "application/ld+json",
+        "rel" => "alternate",
+      ];
+    }
 
-  /**
-   * Generates media urls.
-   *
-   * @param \Drupal\media_entity\MediaInterface $media
-   *   The media.
-   *
-   * @return array
-   *   AS2 Links.
-   */
-  protected function generateMediaLinks(MediaInterface $media) {
-    $url = $media->toUrl()->setAbsolute()->toString();
-    return [
-        [
-          "name" => "Canoncial",
-          "type" => "Link",
-          "href" => "$url",
-          "mediaType" => "text/html",
-          "rel" => "canonical",
-        ],
-        [
-          "name" => "JSONLD",
-          "type" => "Link",
-          "href" => "$url?_format=jsonld",
-          "mediaType" => "application/ld+json",
-        ],
-        [
-          "name" => "JSON",
-          "type" => "Link",
-          "href" => "$url?_format=json",
-          "mediaType" => "application/json",
-        ],
-    ];
-  }
+    unset($data["event"]);
+    unset($data["queue"]);
 
-  /**
-   * Generates node urls.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The node.
-   *
-   * @return array
-   *   AS2 Links.
-   */
-  protected function generateNodeLinks(NodeInterface $node) {
-    $url = $node->toUrl()->setAbsolute()->toString();
-    return [
-        [
-          "name" => "Canoncial",
-          "type" => "Link",
-          "href" => "$url",
-          "mediaType" => "text/html",
-          "rel" => "canonical",
-        ],
-        [
-          "name" => "JSONLD",
-          "type" => "Link",
-          "href" => "$url?_format=jsonld",
-          "mediaType" => "application/ld+json",
-        ],
-    ];
+    if (!empty($data)) {
+      $event["attachment"] = [
+        "type" => "Object",
+        "content" => $data,
+        "mediaType" => "application/json",
+      ];
+    }
+
+    return json_encode($event);
   }
 
 }
