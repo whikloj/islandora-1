@@ -309,12 +309,26 @@ class AbstractGenerateDerivative extends EmitEvent {
     $this->configuration['destination_media_type'] = $form_state->getValue('destination_media_type');
   }
 
+  /**
+   * Find a media_type by id and return it or nothing.
+   *
+   * @param string $entity_id
+   *   The media type.
+   *
+   * @return EntityInterface|string
+   *   Return the loaded entity or nothing.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown by getStorage() if the entity type doesn't exist.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown by getStorage() if the storage handler couldn't be loaded.
+   */
   protected function getEntityById($entity_id) {
     $entity_ids = $this->entityTypeManager->getStorage('media_type')
       ->getQuery()->condition('id', $entity_id)->execute();
 
     $id = reset($entity_ids);
-    if ($id !== false) {
+    if ($id !== FALSE) {
       return $this->entityTypeManager->getStorage('media_type')->load($id);
     }
     return '';
