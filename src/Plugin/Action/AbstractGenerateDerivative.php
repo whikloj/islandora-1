@@ -315,7 +315,7 @@ class AbstractGenerateDerivative extends EmitEvent {
    * @param string $entity_id
    *   The media type.
    *
-   * @return EntityInterface|string
+   * @return \Drupal\Core\Entity\EntityInterface|string
    *   Return the loaded entity or nothing.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
