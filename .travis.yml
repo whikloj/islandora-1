@@ -3,6 +3,8 @@ language: php
 php:
   - 7.1
   - 7.2
+services:
+  - mysql
 
 matrix:
     fast_finish: true
@@ -10,6 +12,7 @@ matrix:
 branches:
   only:
     - /^8.x/
+    - /travis-fix/
 
 before_install:
   - export SCRIPT_DIR=$HOME/CLAW/.scripts
@@ -31,10 +34,10 @@ script:
   - phpcpd --names *.module,*.inc,*.test,*.php $TRAVIS_BUILD_DIR
   - php core/scripts/run-tests.sh --suppress-deprecations --url http://127.0.0.1:8282 --verbose --php `which php` --module "islandora"
 
-notifications:
-  irc:
-    channels:
-      - "irc.freenode.org#islandora"
-    on_success: change
-    on_failure: always
-    skip_join: true
+#notifications:
+#  irc:
+#    channels:
+#      - "irc.freenode.org#islandora"
+#    on_success: change
+#    on_failure: always
+#    skip_join: true
