@@ -61,16 +61,16 @@ function islandora_update_8001(&$sandbox) {
 function islandora_update_8002(&$sandbox) {
   $config_factory = \Drupal::service('config.factory')->getEditable(IslandoraSettingsForm::CONFIG_NAME);
 
-  $changed = false;
+  $changed = FALSE;
   $gemini_url = $config_factory->get(IslandoraSettingsForm::GEMINI_URL);
   $pseudo_bundles = $config_factory->get(IslandoraSettingsForm::GEMINI_PSEUDO);
   if (!isset($gemini_url)) {
     $config_factory->set(IslandoraSettingsForm::GEMINI_URL, '');
-    $changed = true;
+    $changed = TRUE;
   }
   if (!isset($pseudo_bundles)) {
     $config_factory->set(IslandoraSettingsForm::GEMINI_PSEUDO, []);
-    $changed = true;
+    $changed = TRUE;
   }
   if ($changed) {
     $config_factory->save();
