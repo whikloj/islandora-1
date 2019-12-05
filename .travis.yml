@@ -8,15 +8,9 @@ branches:
   only:
     - /master/
 
-install:
-  - git clone https://github.com/Islandora/documentation.git $HOME/islandora
-  - pip install mkdocs
-  - pip install mkdocs-material
-
 script:
-  - cd $HOME/islandora
-  - mkdocs build --clean
-  
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash $HOME/islandora/.scripts/deploy_documentation.sh; fi'
+
 deploy:
   provider: pages
   local_dir: $HOME/islandora/site
