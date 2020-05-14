@@ -1,6 +1,5 @@
 sudo: true
 language: python
-python: "3.0"
 
 matrix:
     fast_finish: true
@@ -8,6 +7,10 @@ matrix:
 branches:
   only:
     - /master/
+
+before_install:
+  - pip --version
+  - python --version
 
 install:
   - pip install mkdocs
